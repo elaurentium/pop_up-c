@@ -1,6 +1,6 @@
 #include <windows.h>
 
-// Declaração da função de janela
+// window function
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
@@ -14,21 +14,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         return 1;
     }
 
-    // Crie a janela
+    // build window
     HWND hwnd = CreateWindow(L"MinhaJanela", L"Minha Aplicação", WS_OVERLAPPEDWINDOW, 100, 100, 400, 200, 0, 0, hInstance, 0);
 
     if (!hwnd) {
         return 2;
     }
 
-    // Crie um botão
+    // build button
     HWND button = CreateWindow(L"BUTTON", L"Sair", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 150, 100, 80, 30, hwnd, (HMENU)1, hInstance, 0);
 
     if (!button) {
         return 3;
     }
 
-    // Crie um rótulo (label) com a mensagem
+    // build label with message
     CreateWindow(L"STATIC", L"Oi, eu estou no seu computador agora :D", WS_CHILD | WS_VISIBLE | SS_CENTER, 50, 30, 300, 40, hwnd, 0, hInstance, 0);
 
     ShowWindow(hwnd, nCmdShow);
@@ -46,7 +46,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
         case WM_COMMAND:
             if (LOWORD(wParam) == 1) {
-                // Se o botão for pressionado, feche a janela
+                // press button to exit
                 PostQuitMessage(0);
             }
             break;
