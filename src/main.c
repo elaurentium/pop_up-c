@@ -1,53 +1,58 @@
-#include <Windows.h>
+#include <windows.h>
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+// Declaração da função de janela
+LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-    WNDCLASS wc = { 0 };
+    WNDCLASS wc = {0};
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
-    wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    wc.hCursor = LoadCursor(0, IDC_ARROW);
     wc.lpszClassName = L"MinhaJanela";
 
     if (!RegisterClass(&wc)) {
         return 1;
     }
 
-    HWND hwnd = CreateWindow(L"MinhaJanela", L"Minha Aplicação", WS_OVERLAPPEDWINDOW, 100, 100, 400, 200, nullptr, nullptr, hInstance, nullptr);
+    // Crie a janela
+    HWND hwnd = CreateWindow(L"MinhaJanela", L"Minha Aplicação", WS_OVERLAPPEDWINDOW, 100, 100, 400, 200, 0, 0, hInstance, 0);
 
     if (!hwnd) {
         return 2;
     }
 
-    HWND button = CreateWindow(L"BUTTON", L"Sair", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 150, 100, 80, 30, hwnd, (HMENU)1, hInstance, nullptr);
+    // Crie um botão
+    HWND button = CreateWindow(L"BUTTON", L"Sair", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 150, 100, 80, 30, hwnd, (HMENU)1, hInstance, 0);
 
     if (!button) {
         return 3;
     }
 
-    CreateWindow(L"STATIC", L"Oi, eu estou no seu computador agora :D", WS_CHILD | WS_VISIBLE | SS_CENTER, 50, 30, 300, 40, hwnd, nullptr, hInstance, nullptr);
+    // Crie um rótulo (label) com a mensagem
+    CreateWindow(L"STATIC", L"Oi, eu estou no seu computador agora :D", WS_CHILD | WS_VISIBLE | SS_CENTER, 50, 30, 300, 40, hwnd, 0, hInstance, 0);
 
     ShowWindow(hwnd, nCmdShow);
     MSG msg;
 
-    while (GetMessage(&msg, nullptr, 0, 0)) {
+    while (GetMessage(&msg, 0, 0, 0)) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
 
-    return static_cast<int>(msg.wParam);
+    return msg.wParam;
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
-    case WM_COMMAND:
-        if (LOWORD(wParam) == 1) {
+        case WM_COMMAND:
+            if (LOWORD(wParam) == 1) {
+                // Se o botão for pressionado, feche a janela
+                PostQuitMessage(0);
+            }
+            break;
+        case WM_DESTROY:
             PostQuitMessage(0);
-        }
-        break;
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
+            break;
     }
 
     return DefWindowProc(hwnd, msg, wParam, lParam);
